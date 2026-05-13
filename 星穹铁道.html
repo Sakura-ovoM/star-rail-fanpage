@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>崩坏：星穹铁道</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: #0a0a0f;
+    color: #ccc;
+    line-height: 1.8;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a0f 70%);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 50% 70%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(2px 2px at 15% 80%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 70% 40%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 40% 10%, rgba(200,200,255,0.6), transparent),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 30% 50%, rgba(200,200,255,0.5), transparent),
+      radial-gradient(1px 1px at 10% 45%, rgba(255,255,255,0.4), transparent);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 200; letter-spacing: 0.15em; color: #fff; }
+  .hero .subtitle { font-size: 1.1rem; color: #888; margin-top: 1rem; letter-spacing: 0.3em; }
+  .hero .en-name { font-size: 0.85rem; color: #666; margin-top: 0.5rem; letter-spacing: 0.2em; }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; z-index: 1;
+    color: #555; font-size: 0.8rem; animation: float 2s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .section {
+    max-width: 900px; margin: 0 auto; padding: 5rem 2rem;
+  }
+
+  .section h2 {
+    font-size: 1.8rem; font-weight: 300; color: #fff; letter-spacing: 0.08em;
+    margin-bottom: 2rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid #222;
+  }
+
+  /* Introduction */
+  .intro p { margin-bottom: 1.2rem; color: #aaa; }
+
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .feature-card {
+    background: #111118; border: 1px solid #1a1a2a; border-radius: 8px;
+    padding: 2rem 1.5rem; text-align: center; transition: border-color 0.3s;
+  }
+  .feature-card:hover { border-color: #334; }
+  .feature-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .feature-card h3 { font-size: 1rem; color: #ddd; font-weight: 500; margin-bottom: 0.5rem; }
+  .feature-card p { font-size: 0.85rem; color: #777; }
+
+  /* Version */
+  .version-badge {
+    display: inline-block; background: #1a1a3e; border: 1px solid #334;
+    color: #aac; font-size: 0.85rem; padding: 0.3rem 1rem; border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .version-name { font-size: 1.4rem; color: #fff; font-weight: 400; margin-bottom: 1rem; }
+
+  /* Character */
+  .char-card {
+    background: #111118; border: 1px solid #1a1a2a; border-radius: 12px;
+    padding: 2.5rem; display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;
+  }
+  .char-avatar {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: linear-gradient(135deg, #2a1a3e, #1a2a3e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; flex-shrink: 0;
+  }
+  .char-info h3 { color: #fff; font-size: 1.4rem; font-weight: 400; }
+  .char-info .title-tag { color: #888; font-size: 0.9rem; }
+  .char-info .desc { color: #999; margin-top: 0.8rem; font-size: 0.95rem; }
+
+  /* PV Gallery */
+  .pv-list { display: grid; gap: 1rem; }
+  .pv-item {
+    display: flex; align-items: center; gap: 1.5rem;
+    background: #111118; border: 1px solid #1a1a2a; border-radius: 8px;
+    padding: 1.2rem 1.5rem; transition: border-color 0.3s; text-decoration: none; color: inherit;
+  }
+  .pv-item:hover { border-color: #446; }
+  .pv-thumb {
+    width: 140px; height: 80px; border-radius: 4px; flex-shrink: 0;
+    background: linear-gradient(135deg, #1a1a3e, #2a1a2a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .pv-info h4 { color: #ddd; font-weight: 400; }
+  .pv-info span { color: #666; font-size: 0.8rem; }
+
+  /* Image Gallery */
+  .img-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  .img-grid .img-placeholder {
+    aspect-ratio: 16/9; background: linear-gradient(135deg, #1a1a3e, #1e1e2e);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    color: #555; font-size: 0.85rem; cursor: pointer; transition: transform 0.3s;
+    overflow: hidden; position: relative;
+  }
+  .img-grid .img-placeholder:hover { transform: scale(1.02); }
+  .img-grid .img-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Links */
+  .link-grid { display: grid; gap: 0.8rem; }
+  .link-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.5rem; background: #111118; border: 1px solid #1a1a2a;
+    border-radius: 8px; text-decoration: none; color: #aaa; transition: all 0.3s;
+  }
+  .link-item:hover { border-color: #446; color: #ddd; }
+  .link-item .arrow { margin-left: auto; color: #444; }
+
+  footer {
+    text-align: center; padding: 3rem 2rem; color: #444; font-size: 0.8rem;
+    border-top: 1px solid #111;
+  }
+
+  a { color: #89a; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="stars"></div>
+  <div class="hero-content">
+    <h1>崩坏：星穹铁道</h1>
+    <p class="subtitle">愿此行，终抵群星</p>
+    <p class="en-name">Honkai: Star Rail</p>
+  </div>
+  <div class="scroll-hint">↓ 探索 ↓</div>
+</section>
+
+<section class="section" id="intro">
+  <h2>关于游戏</h2>
+  <p>《崩坏：星穹铁道》是米哈游（HoYoverse）旗下一款银河冒险RPG。玩家将乘坐「星穹列车」穿越银河，探索不同星球与文化，结识旅伴，在星海间书写传奇。</p>
+  <p>游戏采用回合制战斗系统，融合开放世界探索与Roguelike元素。至今已上线多个星球，包括「黑塔空间站」、「雅利洛-VI」、「罗浮仙舟」、「匹诺康尼」、「翁法罗斯」等。</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">🌌</div>
+      <h3>银河探索</h3>
+      <p>穿梭于不同的星球与世界，揭开宇宙的神秘面纱</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⚔️</div>
+      <h3>策略战斗</h3>
+      <p>回合制战斗系统，属性克制与队伍搭配策略十足</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎭</div>
+      <h3>丰富的角色</h3>
+      <p>众多性格鲜明的角色，每位都有独特的背景故事</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎵</div>
+      <h3>HOYO-MiX音乐</h3>
+      <p>顶级配乐团队打造的沉浸式音乐体验</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="version">
+  <h2>最新版本</h2>
+  <span class="version-badge">Version 4.2</span>
+  <h3 class="version-name">「如是，众生欢笑不已」</h3>
+  <p style="color:#888">以二相乐园为舞台的全新篇章，欢愉与丰饶的双重令使「绯英」登场。</p>
+</section>
+
+<section class="section" id="character">
+  <h2>新角色</h2>
+  <div class="char-card">
+    <div class="char-avatar" style="overflow:hidden">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/绯英立绘.jpg"
+           alt="绯英" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="char-info">
+      <h3>绯英 <span style="font-size:0.8rem;color:#666">Evanescia</span></h3>
+      <p class="title-tag">二相乐园 · 欢愉 / 丰饶 · 双重令使</p>
+      <p class="desc">
+        来自二相乐园的神秘少女，持有「欢愉」与「丰饶」双命途之力。
+        拥有不死不灭之躯，却总与面包、奶茶为伴，过着看似平凡的日常。
+        CV：溯浔 / 佐仓绫音 / Nathalie Ferare
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pv">
+  <h2>最新 PV</h2>
+  <div class="pv-list">
+
+    <a class="pv-item" href="https://www.bilibili.com/video/BV1dE5p6bEut" target="_blank">
+      <div class="pv-thumb">🎬</div>
+      <div class="pv-info">
+        <h4>绯英角色PV ——「她的日常」</h4>
+        <span>2026年5月 · B站播放</span>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="pv-item" href="https://www.bilibili.com/video/BV1aocozeErR" target="_blank">
+      <div class="pv-thumb">🖼️</div>
+      <div class="pv-info">
+        <h4>绯英立绘前瞻 ——「物理欢愉」</h4>
+        <span>2026年5月 · B站播放</span>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="pv-item" href="https://www.bilibili.com/video/BV1FKRcB6EBS" target="_blank">
+      <div class="pv-thumb">🎵</div>
+      <div class="pv-info">
+        <h4>2026「星铁奇妙夜」线上音乐演出</h4>
+        <span>2026年5月3日 · 完整版</span>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="pv-item" href="https://www.bilibili.com/video/BV1bRmBgEZs" target="_blank">
+      <div class="pv-thumb">🐉</div>
+      <div class="pv-info">
+        <h4>丹恒·腾荒角色PV ——「归处」</h4>
+        <span>2026年 · B站播放</span>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <h2>精彩图集</h2>
+  <p style="color:#666;margin-bottom:1.5rem;">（点击缩略图前往查看原图）</p>
+  <div class="img-grid">
+    <a class="img-placeholder" href="https://commons.moegirl.org.cn/Special:Redirect/file/绯英立绘.jpg" target="_blank">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/绯英立绘.jpg" alt="绯英立绘" loading="lazy">
+    </a>
+    <a class="img-placeholder" href="https://www.creativeuncut.com/art_honkai-star-rail_a.html" target="_blank">
+      🖼️ 官方画廊
+    </a>
+    <a class="img-placeholder" href="https://sr.mihoyo.com/wallpaper" target="_blank">
+      🖼️ 官方壁纸
+    </a>
+    <a class="img-placeholder" href="https://www.pixiv.net/tags/%E5%B4%A9%E5%9D%8F%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AC%E3%82%A4%E3%83%AB" target="_blank">
+      🖼️ Pixiv同人
+    </a>
+  </div>
+</section>
+
+<section class="section" id="links">
+  <h2>官方链接</h2>
+  <div class="link-grid">
+    <a class="link-item" href="https://sr.mihoyo.com" target="_blank">官方网站 <span class="arrow">→</span></a>
+    <a class="link-item" href="https://space.bilibili.com/1340190821" target="_blank">B站官方账号 <span class="arrow">→</span></a>
+    <a class="link-item" href="https://wiki.biligame.com/sr" target="_blank">BWiki 星穹铁道 <span class="arrow">→</span></a>
+    <a class="link-item" href="https://honkai-star-rail.fandom.com" target="_blank">Fandom Wiki <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<footer>
+  <p>此页面由 七 制作 · 素材版权归米哈游/HoYoverse所有</p>
+</footer>
+
+</body>
+</html>
