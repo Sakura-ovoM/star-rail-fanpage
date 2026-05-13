@@ -18,10 +18,20 @@
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
-    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a0f 70%);
     padding: 2rem;
     position: relative;
     overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background:
+      url('https://commons.moegirl.org.cn/Special:Redirect/file/%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93_%E6%BC%AB%E6%B8%B8%E6%B5%8B%E8%AF%95.png') center/cover no-repeat;
+    filter: brightness(0.3) blur(1px);
+    transform: scale(1.05);
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, #0a0a0f 80%);
   }
 
   .stars {
@@ -52,6 +62,26 @@
 
   .section {
     max-width: 900px; margin: 0 auto; padding: 5rem 2rem;
+    position: relative;
+  }
+
+  .intro-section {
+    padding: 6rem 2rem;
+    position: relative;
+  }
+  .intro-section::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background:
+      url('https://commons.moegirl.org.cn/Special:Redirect/file/%E4%BB%99%E8%88%9F%E7%BD%97%E6%B5%AE_%E6%98%9F%E6%A7%9A%E6%B5%B7.png') center/cover no-repeat;
+    filter: brightness(0.15);
+    transform: scale(1.02);
+  }
+  .intro-section .section { backdrop-filter: none; }
+
+  .gallery-section {
+    padding: 6rem 2rem;
+    position: relative;
+    background: #0d0d15;
   }
 
   .section h2 {
@@ -160,7 +190,8 @@
   <div class="scroll-hint">↓ 探索 ↓</div>
 </section>
 
-<section class="section" id="intro">
+<section class="intro-section">
+<div class="section">
   <h2>关于游戏</h2>
   <p>《崩坏：星穹铁道》是米哈游（HoYoverse）旗下一款银河冒险RPG。玩家将乘坐「星穹列车」穿越银河，探索不同星球与文化，结识旅伴，在星海间书写传奇。</p>
   <p>游戏采用回合制战斗系统，融合开放世界探索与Roguelike元素。至今已上线多个星球，包括「黑塔空间站」、「雅利洛-VI」、「罗浮仙舟」、「匹诺康尼」、「翁法罗斯」等。</p>
@@ -187,6 +218,7 @@
       <p>顶级配乐团队打造的沉浸式音乐体验</p>
     </div>
   </div>
+</div>
 </section>
 
 <section class="section" id="version">
@@ -258,23 +290,25 @@
   </div>
 </section>
 
-<section class="section" id="gallery">
+<section class="gallery-section">
+<div class="section">
   <h2>精彩图集</h2>
-  <p style="color:#666;margin-bottom:1.5rem;">（点击缩略图前往查看原图）</p>
+  <p style="color:#666;margin-bottom:1.5rem;">官方壁纸与视觉图</p>
   <div class="img-grid">
-    <a class="img-placeholder" href="https://commons.moegirl.org.cn/Special:Redirect/file/绯英立绘.jpg" target="_blank">
-      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/绯英立绘.jpg" alt="绯英立绘" loading="lazy">
-    </a>
-    <a class="img-placeholder" href="https://www.creativeuncut.com/art_honkai-star-rail_a.html" target="_blank">
-      🖼️ 官方画廊
-    </a>
-    <a class="img-placeholder" href="https://sr.mihoyo.com/wallpaper" target="_blank">
-      🖼️ 官方壁纸
-    </a>
-    <a class="img-placeholder" href="https://www.pixiv.net/tags/%E5%B4%A9%E5%9D%8F%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%AC%E3%82%A4%E3%83%AB" target="_blank">
-      🖼️ Pixiv同人
-    </a>
+    <div class="img-placeholder">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/%E7%BB%AF%E8%8B%B1%E7%AB%8B%E7%BB%98.jpg" alt="绯英立绘" loading="lazy">
+    </div>
+    <div class="img-placeholder">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93_%E8%B7%83%E8%BF%81%E6%B5%8B%E8%AF%95.jpg" alt="跃迁测试" loading="lazy">
+    </div>
+    <div class="img-placeholder">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/%E5%B4%A9%E5%9D%8F%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93_%E4%B8%A4%E5%91%A8%E5%B9%B4%E8%B4%BA%E5%9B%BE.png" alt="两周年贺图" loading="lazy">
+    </div>
+    <div class="img-placeholder">
+      <img src="https://commons.moegirl.org.cn/Special:Redirect/file/%E6%98%9F%E7%A9%B9%E9%93%81%E9%81%93_%E5%85%83%E6%97%A62023.png" alt="元旦贺图" loading="lazy">
+    </div>
   </div>
+</div>
 </section>
 
 <section class="section" id="links">
